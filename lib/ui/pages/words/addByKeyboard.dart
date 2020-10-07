@@ -27,13 +27,11 @@ class AddByKeyboard extends StatelessWidget {
   static const platform = const MethodChannel('dictionary_search');
 
   Future<void> _searchDictionary(String queryWord) async {
-    String dictionaryLevel;
     try {
       await platform.invokeMethod(
           'searchDictionary', <String, dynamic>{"queryWord": queryWord});
     } on PlatformException catch (e) {
       print(e);
-      dictionaryLevel = "Failed to search dictionary";
     }
   }
 
@@ -50,6 +48,7 @@ class AddByKeyboard extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
+                initialValue: wordAddModel.word,
                 decoration: InputDecoration(
                   labelText: "単語",
                 ),

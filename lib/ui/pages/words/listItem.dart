@@ -9,6 +9,12 @@ import 'package:romney/ui/pages/words/detail.dart' as wordDetail;
 import 'package:romney/ui/pages/words/taggedList.dart';
 import 'package:romney/viewmodels/words/taggedList.dart';
 import 'package:romney/viewmodels/words/listItem.dart';
+import 'package:romney/viewmodels/words/list.dart';
+
+enum DeleteConfirmOption {
+  Delete,
+  Cancel,
+}
 
 class ListItem extends StatelessWidget {
   static const platform = const MethodChannel('dictionary_search');
@@ -19,6 +25,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wordListItemVM = context.watch<WordListItemViewModel>();
+    final wordListVM = context.watch<WordViewModel>();
     return GestureDetector(
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
@@ -35,7 +42,7 @@ class ListItem extends StatelessWidget {
                   Text(word.word, style: TextStyle(fontSize: 12.0)),
                 ]),
             subtitle: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   // Text("description or meaning"),
                   // SizedBox(width: 12),
@@ -100,7 +107,12 @@ class ListItem extends StatelessWidget {
               caption: '削除',
               color: Colors.red,
               icon: Icons.delete,
-              onTap: () => print('Delete'),
+              onTap: () {
+                _openDeleteDialog(context);
+                // wordListItemVM.delete();
+                // wordListVM.deleteOne(wordListItemVM.word);
+                // print('Delete');
+              },
             ),
           ],
         ),
@@ -109,6 +121,35 @@ class ListItem extends StatelessWidget {
           //   return wordDetail.Detail(word: word);
           // }));
         });
+  }
+
+  void _openDeleteDialog(BuildContext context) async {
+    final wordListItemVM = context.read<WordListItemViewModel>();
+    final wordListVM = context.read<WordViewModel>();
+    switch (await showDialog<DeleteConfirmOption>(
+        context: context,
+        builder: (BuildContext context) =>
+            AlertDialog(content: Text("削除してOK？"), actions: [
+              SimpleDialogOption(
+                  child: Text("削除"),
+                  onPressed: () {
+                    Navigator.pop(context, DeleteConfirmOption.Delete);
+                  }),
+              SimpleDialogOption(
+                  child: Text("戻る"),
+                  onPressed: () {
+                    Navigator.pop(context, DeleteConfirmOption.Cancel);
+                  }),
+            ]))) {
+      case DeleteConfirmOption.Delete:
+        wordListItemVM.delete();
+        wordListVM.deleteOne(wordListItemVM.word);
+        print("Delete");
+        break;
+      case DeleteConfirmOption.Cancel:
+        print("Cancel");
+        break;
+    }
   }
 
   Future<void> _searchDictionary(String queryWord) async {

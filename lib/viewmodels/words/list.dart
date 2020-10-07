@@ -18,6 +18,11 @@ class WordViewModel extends ChangeNotifier {
     return wordList[index];
   }
 
+  Future deleteOne(Word word) async {
+    this.wordList.removeWhere((e) => e.id == word.id);
+    notifyListeners();
+  }
+
   Future addWord(String newWord) {
     wordList.add(Word(word: newWord));
     notifyListeners();

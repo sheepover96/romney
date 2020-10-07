@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:camera/camera.dart';
+
+import 'package:romney/global/cameras.dart' as gCamera;
 
 import 'package:romney/database/database.dart' as db;
 import 'package:romney/ui/pages/home.dart' as mainPage;
@@ -15,6 +18,10 @@ void main() async {
 
   final dbProvider = new db.DBProvider();
   await dbProvider.init();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  gCamera.cameras = cameras;
 
   final wordsRepo = WordsRepository(dbProvider: dbProvider);
   WordsUsecase(wordsRepository: wordsRepo);

@@ -1,6 +1,8 @@
 import UIKit
 import Flutter
 import Foundation
+import SwiftyTesseract
+
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -24,7 +26,6 @@ import Foundation
             } else {
                 result(FlutterError(code: "-1", message: "Invalid Argument", details: nil))
             }
-            result(FlutterError(code: "-1", message: "Invalid Argument", details: nil))
         case "isWordInDictionary":
             guard let args = call.arguments else {
                 return
@@ -35,7 +36,17 @@ import Foundation
             } else {
                 result(FlutterError(code: "-1", message: "Invalid Argument", details: nil))
             }
-            result(FlutterError(code: "-1", message: "Invalid Argument", details: nil))
+        case "detectTextInImage":
+            guard let args = call.arguments else {
+                return
+            }
+            if let detectTextArgs = args as? Dictionary<String, Any>,
+                let imagePath = detectTextArgs["imagePath"] as? String {
+                // self.searchDictionary(result: result,controller: controller, queryWord: "test")
+                self.detectTextInImage(result: result,controller: controller, imagePath: imagePath)
+            } else {
+                result(FlutterError(code: "-1", message: "Invalid Argument", details: nil))
+            }
         default:
             result(FlutterMethodNotImplemented)
             return
@@ -46,14 +57,28 @@ import Foundation
   }
 
     func searchDictionary(result: FlutterResult, controller: FlutterViewController, queryWord: String){
-        if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: queryWord) {
-            let ref: UIReferenceLibraryViewController = UIReferenceLibraryViewController(term: queryWord)
-            controller.present(ref, animated: true, completion: nil)
-        }
+        let ref: UIReferenceLibraryViewController = UIReferenceLibraryViewController(term: queryWord)
+        controller.present(ref, animated: true, completion: nil)
     }
-    
+
     func isWordInDictionary(result: FlutterResult, controller: FlutterViewController, queryWord: String){
         let isInDictionary = UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: queryWord)
         result(Bool(isInDictionary))
+    }
+
+    func detectTextInImage(result: FlutterResult, controller: FlutterViewController, imagePath: String){
+        let imageURL = URL(fileURLWithPath: imagePath)
+        let image = UIImage(contentsOfFile: imageURL.path)
+        if let unwrapped = image {
+            let tesseract = SwiftyTesseract(language: .japanese)
+            let res = tesseract.performOCR(on: unwrapped)
+            do {
+                let detectedText = try res.get()
+                print(detectedText)
+                result(detectedText)
+            } catch {
+                result("")
+            }
+        }
     }
 }

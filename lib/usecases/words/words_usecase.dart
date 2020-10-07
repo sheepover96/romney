@@ -20,6 +20,11 @@ class WordsUsecase implements IWordsUsecase {
     return Future.value("succeed");
   }
 
+  Future delete(Word word) async {
+    await wordsRepository.delete(word);
+    return Future.value("succeed");
+  }
+
   Future update() async {}
 
   Future getOne() async {}

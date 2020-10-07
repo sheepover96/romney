@@ -5,11 +5,7 @@ import 'package:romney/entities/tag.dart';
 
 class TagListViewModel extends ChangeNotifier {
   final TagsUsecase tagsUsecase = TagsUsecase();
-  List<Tag> tagList = [
-    Tag(tag: "tag1"),
-    Tag(tag: "tag2"),
-    Tag(tag: "tag3"),
-  ];
+  List<Tag> tagList = [];
 
   TagListViewModel();
 

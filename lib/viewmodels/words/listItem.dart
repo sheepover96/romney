@@ -15,5 +15,11 @@ class WordListItemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future delete() async {
+    await wordsUsecase.delete(this.word);
+    this.word.isFavorite = !this.word.isFavorite;
+    notifyListeners();
+  }
+
   // Future updateIsFavorite(int wordID) {}
 }

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:searchable_dropdown/searchable_dropdown.dart';
-
 import 'package:romney/usecases/words/words_usecase.dart';
 import 'package:romney/entities/word.dart';
 import 'package:romney/usecases/tags/tags_usecase.dart';
 import 'package:romney/entities/tag.dart';
 
 class WordAddViewModel extends ChangeNotifier {
-  static const platform = const MethodChannel('dictionary_search');
+  final platform = const MethodChannel('dictionary_search');
   final WordsUsecase wordsUsecase = WordsUsecase();
   final TagsUsecase tagsUsecase = TagsUsecase();
   bool _isProcessing = false;
@@ -21,7 +19,9 @@ class WordAddViewModel extends ChangeNotifier {
   Tag _tag;
   List<Tag> tagList = [];
 
-  WordAddViewModel();
+  WordAddViewModel({String word: ""}) {
+    this._word = word;
+  }
 
   get word => _word;
   set word(word) {

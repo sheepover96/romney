@@ -37,6 +37,15 @@ class WordsRepository implements IWordsRepository {
     }
   }
 
+  Future delete(Word word) async {
+    try {
+      print("before delete");
+      dbProvider.db.delete("words", where: "id=?", whereArgs: [word.id]);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future update() async {}
 
   Future getOne() async {}

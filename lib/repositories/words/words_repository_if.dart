@@ -4,6 +4,8 @@ import 'package:romney/entities/tag.dart';
 abstract class IWordsRepository {
   Future insert(Word word);
 
+  Future delete(Word word);
+
   Future update();
 
   Future getOne();
