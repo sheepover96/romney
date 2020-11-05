@@ -39,7 +39,6 @@ class WordsRepository implements IWordsRepository {
 
   Future delete(Word word) async {
     try {
-      print("before delete");
       dbProvider.db.delete("words", where: "id=?", whereArgs: [word.id]);
     } catch (e) {
       print(e);
@@ -80,7 +79,7 @@ class WordsRepository implements IWordsRepository {
         tags.created_at as tag_created_at
         FROM tags LEFT OUTER JOIN word_tags
         ON word_tags.tag_id = tags.id
-      ) as RES1 ON words.id = RES1.word_id
+      ) AS RES1 ON words.id = RES1.word_id
       """);
       res.forEach((Map<String, dynamic> wordMap) {
         final word = dbWord.Word.fromMap(wordMap);

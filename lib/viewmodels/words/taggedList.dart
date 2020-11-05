@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:romney/usecases/words/words_usecase.dart';
 import 'package:romney/entities/word.dart';
 import 'package:romney/entities/tag.dart';
+import 'package:romney/viewmodels/words/list_if.dart';
 
-class TaggedWordListViewModel extends ChangeNotifier {
+class TaggedWordListViewModel extends ChangeNotifier
+    implements IWordListViewModel {
   final WordsUsecase wordsUsecase = WordsUsecase();
   Tag tag;
   List<Word> wordList = [];
@@ -24,6 +26,11 @@ class TaggedWordListViewModel extends ChangeNotifier {
     wordList.add(Word(word: newWord));
     notifyListeners();
     return Future.value("succeed");
+  }
+
+  Future deleteOne(Word word) async {
+    this.wordList.removeWhere((e) => e.id == word.id);
+    notifyListeners();
   }
 
   Future<String> fetchTaggedWords() async {

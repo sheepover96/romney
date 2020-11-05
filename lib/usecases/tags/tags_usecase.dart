@@ -20,6 +20,11 @@ class TagsUsecase implements ITagsUsecase {
     return Future.value("succeed");
   }
 
+  Future delete(Tag tag) async {
+    await tagsRepository.delete(tag);
+    return Future.value("succeed");
+  }
+
   Future update() async {}
 
   Future getOne() async {}
@@ -29,5 +34,8 @@ class TagsUsecase implements ITagsUsecase {
     return res;
   }
 
-  Future getListWithWordCount() async {}
+  Future<List> getListWithNWords() async {
+    final res = await tagsRepository.getListWithNWords();
+    return res;
+  }
 }

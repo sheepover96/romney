@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:romney/usecases/words/words_usecase.dart';
 import 'package:romney/entities/word.dart';
+import 'package:romney/viewmodels/words/list_if.dart';
 
-class WordViewModel extends ChangeNotifier {
+class WordViewModel extends ChangeNotifier implements IWordListViewModel {
   final WordsUsecase wordsUsecase = WordsUsecase();
   List<Word> wordList = [];
 

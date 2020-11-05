@@ -4,13 +4,22 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 import 'package:romney/entities/tag.dart';
+import 'package:romney/entities/tag_with_nwords.dart';
 import 'package:romney/ui/pages/words/taggedList.dart';
 import 'package:romney/viewmodels/words/taggedList.dart';
 
-class ListItem extends StatelessWidget {
-  final Tag tag;
+import 'package:romney/viewmodels/tags/list.dart';
+import 'package:romney/viewmodels/tags/listItem.dart';
 
-  ListItem({this.tag});
+enum DeleteConfirmOption {
+  Delete,
+  Cancel,
+}
+
+class ListItem extends StatelessWidget {
+  final TagWithNwords tagWithNwords;
+
+  ListItem({this.tagWithNwords});
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +33,16 @@ class ListItem extends StatelessWidget {
             title: Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 children: <Widget>[
-                  Text(tag.tag, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(tagWithNwords.tag,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   // SizedBox(width: 12),
                   // Text(word, style: TextStyle(fontSize: 12.0)),
                 ]),
-            trailing: Text("0個の単語"),
+            trailing: Text("${tagWithNwords.nwords}個の単語"),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return ChangeNotifierProvider.value(
-                    value: TaggedWordListViewModel(tag: tag),
+                    value: TaggedWordListViewModel(tag: tagWithNwords),
                     child: TaggedWordList());
               }));
             },
@@ -42,7 +52,9 @@ class ListItem extends StatelessWidget {
               caption: '削除',
               color: Colors.red,
               icon: Icons.delete,
-              onTap: () => print('Delete'),
+              onTap: () {
+                _openDeleteDialog(context);
+              },
             ),
           ],
         ),
@@ -51,5 +63,34 @@ class ListItem extends StatelessWidget {
           //   return wordDetail.Detail(word: word);
           // }));
         });
+  }
+
+  void _openDeleteDialog(BuildContext context) async {
+    final tagListItemVM = context.read<TagListItemViewModel>();
+    final tagListVM = context.read<TagListViewModel>();
+    switch (await showDialog<DeleteConfirmOption>(
+        context: context,
+        builder: (BuildContext context) =>
+            AlertDialog(content: Text("削除してOK？"), actions: [
+              SimpleDialogOption(
+                  child: Text("削除"),
+                  onPressed: () {
+                    Navigator.pop(context, DeleteConfirmOption.Delete);
+                  }),
+              SimpleDialogOption(
+                  child: Text("戻る"),
+                  onPressed: () {
+                    Navigator.pop(context, DeleteConfirmOption.Cancel);
+                  }),
+            ]))) {
+      case DeleteConfirmOption.Delete:
+        tagListItemVM.delete();
+        tagListVM.deleteOne(tagListItemVM.tag);
+        print("Delete");
+        break;
+      case DeleteConfirmOption.Cancel:
+        print("Cancel");
+        break;
+    }
   }
 }

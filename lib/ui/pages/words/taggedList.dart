@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:romney/ui/pages/words/listItem.dart' as wordItem;
+import 'package:romney/ui/pages/words/taggedListItem.dart';
 import 'package:romney/ui/pages/words/addByKeyboard.dart' as wordAddByKeyboard;
 import 'package:romney/viewmodels/words/add.dart';
 import 'package:romney/viewmodels/words/list.dart';
@@ -50,7 +51,7 @@ class TaggedWordList extends StatelessWidget {
   Widget _buildItem(Word word) {
     return ChangeNotifierProvider<WordListItemViewModel>.value(
         value: WordListItemViewModel(word: word),
-        child: wordItem.ListItem(word: word));
+        child: TaggedListItem(word: word));
   }
 
   Route _createRoute() {
@@ -74,7 +75,7 @@ class TaggedWordList extends StatelessWidget {
   }
 
   void _openDialog(BuildContext context) async {
-    final wordModel = context.read<WordViewModel>();
+    final taggedWordListModel = context.read<TaggedWordListViewModel>();
     switch (await showDialog<BottomNavOptions>(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
@@ -130,7 +131,7 @@ class TaggedWordList extends StatelessWidget {
         // final newWord = await Navigator.of(context).push(_createRoute());
         final newWord = await Navigator.of(context).push(_createRoute());
         if (newWord != null) {
-          wordModel.addWord(newWord);
+          // wordModel.addWord(newWord);
         }
       // print("hogehoge");
     }

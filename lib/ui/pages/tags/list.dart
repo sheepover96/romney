@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:romney/entities/tag.dart';
+import 'package:romney/entities/tag_with_nwords.dart';
 import 'package:romney/ui/pages/tags/add.dart' as tagAdd;
 import 'package:romney/ui/pages/tags/listItem.dart' as tagItem;
 import 'package:romney/viewmodels/tags/list.dart';
+import 'package:romney/viewmodels/tags/listItem.dart';
 
 class TagList extends StatelessWidget {
   @override
@@ -31,7 +33,7 @@ class TagList extends StatelessWidget {
         // Icon(Icons.add),
         onPressed: () async {
           final newTag = await Navigator.of(context).push(_createRoute());
-          tagListViewModel.addTags(newTag);
+          tagListViewModel.addTag(newTag);
           // _openDialog(context);
         },
       ),
@@ -45,7 +47,6 @@ class TagList extends StatelessWidget {
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, 0.8);
         var end = Offset.zero;
-        // var end = Offset(0.0, 0.1);
         var tween = Tween(begin: begin, end: end);
         var offsetAnimation = animation.drive(tween);
         return SlideTransition(
@@ -57,7 +58,10 @@ class TagList extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(Tag tag) {
-    return tagItem.ListItem(tag: tag);
+  Widget _buildItem(TagWithNwords tagWithNwords) {
+    return ChangeNotifierProvider<TagListItemViewModel>.value(
+      value: TagListItemViewModel(tag: tagWithNwords),
+      child: tagItem.ListItem(tagWithNwords: tagWithNwords),
+    );
   }
 }

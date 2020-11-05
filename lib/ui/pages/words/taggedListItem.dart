@@ -5,23 +5,23 @@ import 'package:provider/provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:romney/entities/word.dart';
+import 'package:romney/ui/pages/words/taggedListItem.dart';
 import 'package:romney/ui/pages/words/detail.dart' as wordDetail;
 import 'package:romney/ui/pages/words/taggedList.dart';
 import 'package:romney/viewmodels/words/taggedList.dart';
 import 'package:romney/viewmodels/words/listItem.dart';
 import 'package:romney/viewmodels/words/list.dart';
-import 'package:romney/viewmodels/words/list_if.dart';
 
 enum DeleteConfirmOption {
   Delete,
   Cancel,
 }
 
-class ListItem extends StatelessWidget {
+class TaggedListItem extends StatelessWidget {
   static const platform = const MethodChannel('dictionary_search');
   final Word word;
 
-  ListItem({this.word});
+  TaggedListItem({this.word});
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class ListItem extends StatelessWidget {
 
   void _openDeleteDialog(BuildContext context) async {
     final wordListItemVM = context.read<WordListItemViewModel>();
-    final wordListVM = context.read<WordViewModel>();
+    final taggedListVM = context.read<TaggedWordListViewModel>();
     switch (await showDialog<DeleteConfirmOption>(
         context: context,
         builder: (BuildContext context) =>
@@ -143,11 +143,9 @@ class ListItem extends StatelessWidget {
             ]))) {
       case DeleteConfirmOption.Delete:
         wordListItemVM.delete();
-        wordListVM.deleteOne(wordListItemVM.word);
-        print("Delete");
+        taggedListVM.deleteOne(wordListItemVM.word);
         break;
       case DeleteConfirmOption.Cancel:
-        print("Cancel");
         break;
     }
   }
