@@ -25,15 +25,15 @@ class DBProvider {
     final dbPath = join(documentDirectory.path, 'romney.db');
 
     // await deleteDatabase(dbPath);
-    this.db = await openDatabase(
-      dbPath,
-      version: constants.VERSION,
-      onCreate: (Database newDB, int version) {
-        newDB.execute(constants.TABLE_WORDS_INIT_QUERY);
-        newDB.execute(constants.TABLE_TAGS_INIT_QUERY);
-        newDB.execute(constants.TABLE_WORD_TAG_INIT_QUERY);
-      },
-    );
+    this.db = await openDatabase(dbPath, version: constants.VERSION,
+        onCreate: (Database newDB, int version) {
+      newDB.execute("PRAGMA foreign_keys = ON;");
+      newDB.execute(constants.TABLE_WORDS_INIT_QUERY);
+      newDB.execute(constants.TABLE_TAGS_INIT_QUERY);
+      newDB.execute(constants.TABLE_WORD_TAG_INIT_QUERY);
+    }, onConfigure: (Database db) async {
+      await db.execute("PRAGMA foreign_keys = ON");
+    });
   }
 
   // void insertWord(WordInfo wordInfo) async {

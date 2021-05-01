@@ -63,7 +63,7 @@ class TaggedListItem extends StatelessWidget {
                                 .push(MaterialPageRoute(builder: (context) {
                               return ChangeNotifierProvider.value(
                                   value: TaggedWordListViewModel(tag: word.tag),
-                                  child: TaggedWordList());
+                                  child: TaggedWordList(word.tag));
                             }));
                           },
                         )
@@ -79,7 +79,6 @@ class TaggedListItem extends StatelessWidget {
                   ),
                   onTap: () {
                     this._searchDictionary(word.word);
-                    print("dic icon tapped");
                   },
                 ),
                 SizedBox(width: 10),
@@ -90,7 +89,6 @@ class TaggedListItem extends StatelessWidget {
                   ),
                   onTap: () {
                     wordListItemVM.updateIsFavorite();
-                    print("star icon tapped");
                   },
                 ),
               ],

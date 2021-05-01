@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:romney/ui/pages/words/listItem.dart' as wordItem;
+import 'package:romney/ui/pages/words/listItem.dart';
 import 'package:romney/ui/pages/words/taggedListItem.dart';
 import 'package:romney/ui/pages/words/addByKeyboard.dart' as wordAddByKeyboard;
 import 'package:romney/viewmodels/words/add.dart';
@@ -19,18 +19,30 @@ enum BottomNavOptions {
 }
 
 class TaggedWordList extends StatelessWidget {
+  Tag tag;
+
+  TaggedWordList(Tag tag) {
+    this.tag = tag;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final taggedWordListVM = context.watch<TaggedWordListViewModel>();
+    // final taggedWordListVM = context.watch<TaggedWordListViewModel>();
+    final wordListVM = context.watch<WordViewModel>();
     return Scaffold(
       appBar: AppBar(title: Text('Example title')),
       body: FutureBuilder(
-          future: taggedWordListVM.fetchTaggedWords(),
+          future: wordListVM.fetchWords(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            final wordListFiltered = wordListVM.getListFilteredByTag(this.tag);
             return ListView.builder(
-                itemCount: taggedWordListVM.getList().length,
+                itemCount: wordListFiltered.length,
                 itemBuilder: (context, index) {
-                  return _buildItem(taggedWordListVM.getOne(index));
+                  // return _buildItem(wordListFiltered[index]);
+                  return ChangeNotifierProvider<WordListItemViewModel>.value(
+                      value:
+                          WordListItemViewModel(word: wordListFiltered[index]),
+                      child: ListItem(word: wordListFiltered[index]));
                   // return _buildItem(wordList[index]['word']);
                 });
             // return _buildItemList();
@@ -50,8 +62,7 @@ class TaggedWordList extends StatelessWidget {
 
   Widget _buildItem(Word word) {
     return ChangeNotifierProvider<WordListItemViewModel>.value(
-        value: WordListItemViewModel(word: word),
-        child: TaggedListItem(word: word));
+        value: WordListItemViewModel(word: word), child: ListItem(word: word));
   }
 
   Route _createRoute() {
@@ -75,7 +86,6 @@ class TaggedWordList extends StatelessWidget {
   }
 
   void _openDialog(BuildContext context) async {
-    final taggedWordListModel = context.read<TaggedWordListViewModel>();
     switch (await showDialog<BottomNavOptions>(
         context: context,
         builder: (BuildContext context) => SimpleDialog(

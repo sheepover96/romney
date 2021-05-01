@@ -43,7 +43,7 @@ class ListItem extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return ChangeNotifierProvider.value(
                     value: TaggedWordListViewModel(tag: tagWithNwords),
-                    child: TaggedWordList());
+                    child: TaggedWordList(Tag(tag: tagWithNwords.tag)));
               }));
             },
           )),

@@ -19,8 +19,8 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - SwiftyTesseract (3.1.2)
-  - TOCropViewController (2.5.4)
+  - SwiftyTesseract (3.1.3)
+  - TOCropViewController (2.5.5)
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
@@ -67,9 +67,9 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   searchable_dropdown: 5058be32fdc5e0481d300ff2087129072e71bd62
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  SwiftyTesseract: d898472f63355f8bf023cbab2c80ceda0805a40c
-  TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
+  SwiftyTesseract: 1f3d96668ae92dc2208d9842c8a59bea9fad2cbb
+  TOCropViewController: da59f531f8ac8a94ef6d6c0fc34009350f9e8bfe
 
-PODFILE CHECKSUM: cba1d45844e4638d4d9cae4537c05ee452ce4f1e
+PODFILE CHECKSUM: cfb9d6e850910d36a4512086d2430849632e9d9b
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

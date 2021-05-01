@@ -26,6 +26,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wordListItemVM = context.watch<WordListItemViewModel>();
+    final wordListVM = context.watch<WordViewModel>();
     return GestureDetector(
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
@@ -62,8 +63,9 @@ class ListItem extends StatelessWidget {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
                               return ChangeNotifierProvider.value(
-                                  value: TaggedWordListViewModel(tag: word.tag),
-                                  child: TaggedWordList());
+                                  value: wordListVM,
+                                  child: TaggedWordList(word.tag));
+                              // return TaggedWordList(word.tag);
                             }));
                           },
                         )

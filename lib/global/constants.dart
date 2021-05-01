@@ -29,6 +29,5 @@ CREATE TABLE IF NOT EXISTS word_tags (
   tag_id INTEGER,
   FOREIGN KEY (word_id) REFERENCES words (id) ON DELETE CASCADE,
   FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE
-
 );
 """;

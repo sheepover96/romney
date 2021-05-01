@@ -8,21 +8,6 @@ import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import 'package:romney/viewmodels/words/add.dart';
 
-const TagList = <DropdownMenuItem>[
-  DropdownMenuItem(child: Text("One"), value: 1),
-  DropdownMenuItem(child: Text("Two"), value: 2),
-  DropdownMenuItem(child: Text("Three"), value: 3),
-  // "One",
-  // "Two",
-  // "Three",
-  // "One",
-  // "Two",
-  // "Three",
-  // "One",
-  // "Two",
-  // "Three"
-];
-
 class AddByKeyboard extends StatelessWidget {
   static const platform = const MethodChannel('dictionary_search');
 
