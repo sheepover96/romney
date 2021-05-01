@@ -33,6 +33,7 @@ class Detail extends StatelessWidget {
                                 Row(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
                                   children: [
                                     Text(
                                       this.word,

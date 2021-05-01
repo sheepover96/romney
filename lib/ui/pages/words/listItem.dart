@@ -36,6 +36,7 @@ class ListItem extends StatelessWidget {
             // title: Text(word, style: TextStyle(fontWeight: FontWeight.bold)),
             title: Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
                   Text(word.word,
                       style: TextStyle(fontWeight: FontWeight.bold)),

@@ -5,6 +5,7 @@ import 'package:romney/entities/tag.dart';
 import 'package:romney/entities/tag_with_nwords.dart';
 import 'package:romney/ui/pages/tags/add.dart' as tagAdd;
 import 'package:romney/ui/pages/tags/listItem.dart' as tagItem;
+import 'package:romney/ui/pages/words/favoriteList.dart';
 import 'package:romney/viewmodels/tags/list.dart';
 import 'package:romney/viewmodels/tags/listItem.dart';
 
@@ -15,14 +16,21 @@ class TagList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Tag List')),
       body: FutureBuilder(
-          future: tagListViewModel.fetchTags(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          future: Future.wait([
+            tagListViewModel.fetchTags(),
+            tagListViewModel.fetchNFavorite(),
+          ]),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+            List<Widget> list = [_favoriteItem(tagListViewModel.nFavorite)];
+            tagListViewModel.getList().asMap().forEach((i, e) {
+              list.add(_buildItem(e as TagWithNwords));
+            });
             return ListView.builder(
-                itemCount: tagListViewModel.getList().length,
+                itemCount: list.length,
                 itemBuilder: (context, index) {
-                  return _buildItem(tagListViewModel.getOne(index));
+                  return list[index];
                 });
-            // return _buildItemList();
           }),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add',
@@ -30,7 +38,6 @@ class TagList extends StatelessWidget {
           child: Icon(Icons.add),
         ),
         backgroundColor: Colors.orangeAccent,
-        // Icon(Icons.add),
         onPressed: () async {
           final newTag = await Navigator.of(context).push(_createRoute());
           tagListViewModel.addTag(newTag);
@@ -56,6 +63,10 @@ class TagList extends StatelessWidget {
       },
       fullscreenDialog: true,
     );
+  }
+
+  Widget _favoriteItem(int nFavorite) {
+    return tagItem.BookmarkItem(nFavorite: nFavorite);
   }
 
   Widget _buildItem(TagWithNwords tagWithNwords) {

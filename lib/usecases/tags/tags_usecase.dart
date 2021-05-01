@@ -38,4 +38,9 @@ class TagsUsecase implements ITagsUsecase {
     final res = await tagsRepository.getListWithNWords();
     return res;
   }
+
+  Future<int> countNFavorite() async {
+    final res = await tagsRepository.getListWithNWords();
+    return res;
+  }
 }

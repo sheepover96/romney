@@ -19,4 +19,6 @@ abstract class IWordsRepository {
   Future<List<Word>> getTaggedListWithTag(Tag tag);
 
   Future updateIsFavorite(Word word);
+
+  Future<int> countNFavorite();
 }

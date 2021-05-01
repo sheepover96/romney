@@ -52,4 +52,9 @@ class WordsUsecase implements IWordsUsecase {
   Future updateIsFavorite(Word word) async {
     await wordsRepository.updateIsFavorite(word);
   }
+
+  Future<int> countNFavorite() async {
+    final res = await wordsRepository.countNFavorite();
+    return res;
+  }
 }

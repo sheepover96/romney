@@ -8,6 +8,7 @@ import 'package:romney/viewmodels/words/list_if.dart';
 class WordViewModel extends ChangeNotifier implements IWordListViewModel {
   final WordsUsecase wordsUsecase = WordsUsecase();
   List<Word> wordList = [];
+  int nFavorite;
 
   WordViewModel();
 
@@ -22,12 +23,24 @@ class WordViewModel extends ChangeNotifier implements IWordListViewModel {
 
   List getListFilteredByTag(Tag tag) {
     return wordList.where((w) {
-      print(w);
       if (w.tag != null) {
         return (w.tag.id == tag.id);
       }
       return false;
     }).toList();
+  }
+
+  List getListFavorite() {
+    return wordList.where((w) {
+      return w.isFavorite;
+    }).toList();
+  }
+
+  Future<int> fetchNFavorite() async {
+    final res = await wordsUsecase.countNFavorite();
+    if (res == null) return Future.error(res);
+    this.nFavorite = res;
+    return Future.value(res);
   }
 
   Word getOne(int index) {
@@ -48,6 +61,14 @@ class WordViewModel extends ChangeNotifier implements IWordListViewModel {
 
   Future<String> fetchWords() async {
     final res = await wordsUsecase.getWordListWithTag();
+    if (res != null) {
+      this.wordList = res;
+    }
+    return Future.value("succeed");
+  }
+
+  Future<String> fetchTaggedWords(Tag tag) async {
+    final res = await wordsUsecase.getTaggedWordListWithTag(tag);
     if (res != null) {
       this.wordList = res;
     }

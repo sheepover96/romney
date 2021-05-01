@@ -1,3 +1,4 @@
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sql.dart';
 
 import 'package:romney/database/database.dart' as db;
@@ -5,6 +6,7 @@ import 'package:romney/database/models/word.dart' as dbWord;
 import 'package:romney/entities/tag.dart';
 import 'package:romney/entities/word.dart';
 import 'package:romney/repositories/words/words_repository_if.dart';
+import 'package:sqflite/utils/utils.dart';
 
 class WordsRepository implements IWordsRepository {
   final db.DBProvider dbProvider;
@@ -177,6 +179,17 @@ class WordsRepository implements IWordsRepository {
           "words", {"is_favorite": word.isFavorite ? 0 : 1},
           where: "id = ?", whereArgs: [word.id]);
       return Future.value("success");
+    } catch (e) {
+      print(e);
+      return Future.error(e);
+    }
+  }
+
+  Future<int> countNFavorite() async {
+    try {
+      final res = firstIntValue(await dbProvider.db
+          .rawQuery("select count(*) from words where is_favorite=1;"));
+      return Future.value(res);
     } catch (e) {
       print(e);
       return Future.error(e);

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:romney/ui/pages/words/list.dart' as wordsList;
 import 'package:romney/viewmodels/words/list.dart';
+import 'package:romney/ui/pages/words/favoriteList.dart' as bookmarkList;
 import 'package:romney/ui/pages/tags/list.dart' as tagList;
 import 'package:romney/viewmodels/tags/list.dart';
 
@@ -21,9 +22,13 @@ class _MainPageState extends State<MainPage> {
     // wordsList.List(),
     ChangeNotifierProvider<TagListViewModel>.value(
         value: TagListViewModel(), child: tagList.TagList()),
-    Scaffold(
-      body: Center(child: Text("center")),
-    ),
+    ChangeNotifierProvider<TagListViewModel>.value(
+        value: TagListViewModel(), child: tagList.TagList()),
+    // ChangeNotifierProvider<WordViewModel>.value(
+    //     value: WordViewModel(), child: bookmarkList.B()),
+    // Scaffold(
+    //   body: Center(child: Text("center")),
+    // ),
   ];
 
   @override
