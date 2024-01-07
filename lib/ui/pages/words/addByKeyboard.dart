@@ -27,6 +27,7 @@ class AddByKeyboard extends StatelessWidget {
         appBar: AppBar(
           title: Text("単語追加"),
         ),
+        resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.only(top: 20, left: 40, right: 40),
           child: Column(
@@ -39,7 +40,7 @@ class AddByKeyboard extends StatelessWidget {
                 ),
                 minLines: 1,
                 maxLength: 20,
-                maxLengthEnforced: false,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 onChanged: (String value) {
                   wordAddModel.word = value;
                 },
